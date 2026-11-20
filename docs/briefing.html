@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Dates, registration, tracks, prizes, submission checklist, testnet setup and gotchas for the QoreChain Build Before Q-Day hackathon.">
+<title>Build Before Q-Day Briefing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky section nav, one reading column (~68ch) with full-width tables; deadline strip up top, lattice motif in the header only. */
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #eceef6;
+  --fg: #171a2b;
+  --muted: #5b6078;
+  --line: #d5d8e6;
+  --accent: #1f5f8b;
+  --accent-fg: #ffffff;
+  --accent-soft: #dbe9f5;
+  --warn: #9a5b00;
+  --warn-soft: #fff1d6;
+  --ok: #1d6b4b;
+  --ok-soft: #dcf2e7;
+  --font-display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1220; --surface: #171b2e; --surface-2: #1f2440; --fg: #e8eaf4; --muted: #a2a8c4;
+    --line: #2d3352; --accent: #7fb6e6; --accent-fg: #0f1220; --accent-soft: #1d3250;
+    --warn: #f0b85a; --warn-soft: #3a2c10; --ok: #7bd3a6; --ok-soft: #14341f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1220; --surface: #171b2e; --surface-2: #1f2440; --fg: #e8eaf4; --muted: #a2a8c4;
+  --line: #2d3352; --accent: #7fb6e6; --accent-fg: #0f1220; --accent-soft: #1d3250;
+  --warn: #f0b85a; --warn-soft: #3a2c10; --ok: #7bd3a6; --ok-soft: #14341f; color-scheme: dark;
+}
+* { box-sizing: border-box; } img { max-width: 100%; } html, body { margin: 0; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.55; margin: 0; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+
+header.hero { border-bottom: 1px solid var(--line); background: var(--surface); position: relative; overflow: hidden; }
+header.hero .wrap { padding-block: 40px 28px; position: relative; }
+.lattice { position: absolute; inset: 0; pointer-events: none; opacity: .35; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 8px 0 10px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0 0 20px; font-size: 17px; }
+.strip { display: flex; flex-wrap: wrap; gap: 12px; }
+.tile { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; min-width: 150px; flex: 1 1 150px; }
+.tile .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tile .v { font-family: var(--font-display); font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.tile .s { font-size: 13px; color: var(--muted); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--surface); border-bottom: 1px solid var(--line); }
+nav.toc .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: thin; }
+nav.toc a { white-space: nowrap; font-size: 14px; font-weight: 500; text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 6px; }
+nav.toc a:hover { background: var(--surface-2); color: var(--fg); }
+
+main .wrap { padding-block: 8px 64px; }
+section { padding-block: 36px 8px; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: 0; }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; margin: 28px 0 8px; }
+p, ul, ol { max-width: 68ch; }
+p { margin: 10px 0; }
+ul, ol { padding-left: 22px; margin: 8px 0; }
+li { margin: 5px 0; }
+li::marker { color: var(--muted); }
+.note { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; max-width: 68ch; margin: 14px 0; }
+.note.ok { border-color: var(--ok); background: var(--ok-soft); }
+.note.info { border-color: var(--accent); background: var(--accent-soft); }
+.note strong { font-weight: 600; }
+
+.tablewrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 560px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface-2); }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, td.date { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13.5px; }
+tr.past td { color: var(--muted); }
+tr.past td.date { text-decoration: line-through; }
+tr.today td { background: var(--accent-soft); }
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); vertical-align: middle; }
+.pill.rec { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+
+pre { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.5; margin: 10px 0; }
+code { font-family: var(--font-mono); font-size: .93em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+
+.endpoints { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin: 12px 0; }
+.ep { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.ep .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); flex: 0 0 72px; }
+.ep .val { font-family: var(--font-mono); font-size: 13px; flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.copy { font-family: var(--font-body); font-size: 12px; font-weight: 500; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); border-radius: 6px; padding: 4px 8px; cursor: pointer; flex: 0 0 auto; }
+.copy:hover { border-color: var(--accent); }
+
+.check { list-style: none; padding: 0; max-width: 68ch; }
+.check li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 8px; margin: 2px 0; }
+.check li:hover { background: var(--surface-2); }
+.check input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; flex: 0 0 auto; }
+.check label { cursor: pointer; }
+.check input:checked + label { color: var(--muted); text-decoration: line-through; }
+.check-foot { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 14px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.card h4 { font-family: var(--font-display); font-size: 16px; margin: 0 0 6px; font-weight: 600; }
+.card p { font-size: 14.5px; margin: 6px 0; color: var(--muted); }
+.card .amt { font-family: var(--font-mono); font-size: 13px; color: var(--fg); }
+
+.links { columns: 2; column-gap: 28px; max-width: 68ch; }
+.links li { break-inside: avoid; }
+@media (max-width: 560px) { .links { columns: 1; } }
+footer .wrap { padding-block: 20px 40px; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { nav.toc a { transition: background .15s; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="lattice" viewBox="0 0 1200 300" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+    <defs><pattern id="lat" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+      <circle cx="4" cy="4" r="1.6" fill="currentColor"/><path d="M4 4 L60 4 M4 4 L4 60" stroke="currentColor" stroke-width=".5" fill="none"/>
+    </pattern></defs>
+    <rect x="620" y="0" width="580" height="300" fill="url(#lat)" style="color: var(--accent)"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">QoreChain Developer Fest · online · #BuildBeforeQDay</div>
+    <h1>Build Before Q-Day Briefing</h1>
+    <p class="lede">Everything a two-person team needs for the QoreChain post-quantum hackathon: dates, registration, tracks and prizes, submission rules, testnet setup, SDK install commands and the gotchas that waste days if learned late.</p>
+    <div class="strip">
+      <div class="tile"><div class="k">Submission deadline</div><div class="v">2 Dec 23:59 UTC</div><div class="s" id="countdown">Counting down…</div></div>
+      <div class="tile"><div class="k">Prize pool</div><div class="v">$20,000</div><div class="s">61 prizes, paid in stablecoin</div></div>
+      <div class="tile"><div class="k">Network</div><div class="v">Diana testnet</div><div class="s">qorechain-diana · EVM chain 9800</div></div>
+      <div class="tile"><div class="k">Winners</div><div class="v">16 Dec</div><div class="s">live demo show</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#dates">Dates</a><a href="#register">Register</a><a href="#tracks">Tracks &amp; prizes</a><a href="#submit">Submission</a><a href="#setup">Setup</a><a href="#gotchas">Gotchas</a><a href="#plan">Plan</a><a href="#links">Links</a>
+</div></nav>
+
+<main><div class="wrap">
+
+<section id="dates">
+  <h2>Dates that matter</h2>
+  <p>All times are UTC. The organisers say rules, prizes and dates can change until the event ends, and changes are announced on the site and Discord.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>When</th><th>What</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr data-date="2026-11-04"><td class="date">4 Nov</td><td>Registration and building open</td><td>Only commits made from this date count</td></tr>
+      <tr data-date="2026-11-12"><td class="date">12 Nov 15:00</td><td>Workshop 1: ship your first hybrid-signed transaction</td><td>Ended. Content lives in the docs tutorials</td></tr>
+      <tr data-date="2026-11-17"><td class="date">17 Nov 15:00</td><td>Workshop 2: post-quantum dApps and AI agents</td><td>Ended. Examples in the build-before-qday repo</td></tr>
+      <tr data-date="2026-11-17"><td class="date">17 Nov 23:59</td><td>Q-Day Drill registration closed</td><td>Missed. The 5 × $200 Survivor award is out of reach</td></tr>
+      <tr data-date="2026-11-18"><td class="date">18 Nov</td><td>Q-Day Drill and mid-hack challenges</td><td>Attacker bot targets registered accounts using classical keys only</td></tr>
+      <tr data-date="2026-11-20"><td class="date">20 Nov 16:30</td><td>Workshop 3: encrypted apps, cross-VM, mid-hack challenges</td><td><a href="https://luma.com/tzxebs2b">Register on Luma</a>. Live Q&amp;A with the CTO</td></tr>
+      <tr data-date="2026-11-27"><td class="date">27 Nov 16:30</td><td>Workshop 4: protocol building and submission clinic</td><td><a href="https://luma.com/rli48c3m">Register on Luma</a>. Best place to ask about checks</td></tr>
+      <tr data-date="2026-12-02"><td class="date">2 Dec 23:59</td><td><strong>Submission deadline</strong></td><td>Projects go read-only. There is no submit button, so the project page must be complete before this</td></tr>
+      <tr data-date="2026-12-03"><td class="date">3 to 5 Dec</td><td>Automated and manual checks</td><td>Repo, licence, README, video, addresses, team, commit dates, kits</td></tr>
+      <tr data-date="2026-12-06"><td class="date">6 to 15 Dec</td><td>Jury scoring and People's Choice vote</td><td>Vote happens on mainnet with QoreX. Finalists may get a change request with 48 h to answer</td></tr>
+      <tr data-date="2026-12-16"><td class="date">16 Dec</td><td>Winners announced</td><td>Live demo show</td></tr>
+      <tr data-date="2026-12-17"><td class="date">17 to 22 Dec</td><td>Payouts</td><td>Stablecoin. Winners may be asked for payout details or proof of residence</td></tr>
+      <tr data-date="2027-01-01"><td class="date">Jan 2027</td><td>Follow-on QOR grants</td><td>Up to $5,000, $10,000 or $15,000 against milestones, by level</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="register">
+  <h2>Registration</h2>
+  <p>Free, but both of you must register individually. Registration counts only when GitHub, X and a QoreX testnet address are all connected. You must be 18 or older and use one GitHub account per person.</p>
+  <ol>
+    <li>Install the <a href="https://qorechain.io/qorex">QoreX wallet</a> (phone app or browser extension) and switch it to <strong>Testnet</strong>.</li>
+    <li>Sign in to the <a href="https://dashboard.qorechain.io/faucet">faucet</a> and request test tokens for your qor1 address. You get 100 QOR plus fUSD, fETH and fBTC once per 24 hours.</li>
+    <li>Go to <a href="https://build.qorechain.io/register">build.qorechain.io/register</a> and sign in with GitHub.</li>
+    <li>Pick your level, choose "team", confirm you are 18+, accept the terms.</li>
+    <li>Connect X by OAuth, or post the verification tweet and paste its link.</li>
+    <li>Connect QoreX. If your PQ key is not yet registered on testnet, a small proof transaction is sent to your own address. It costs about 0.1 test QOR, which is why the faucet comes first.</li>
+    <li>From "My space", invite your teammate by GitHub username. They accept from their own My space.</li>
+    <li>Install the <strong>QoreChain Build</strong> GitHub App on the project repo, also from My space.</li>
+  </ol>
+  <div class="note info"><strong>Prerequisites on your machine:</strong> Node.js 20 or newer for the TypeScript kits, or the toolchain for whichever language you pick. Foundry or Hardhat if you enter the dApp track.</div>
+</section>
+
+<section id="tracks">
+  <h2>Tracks, team sizes and prizes</h2>
+  <p>A team of two can enter every category. You may submit more than one project, and each project has exactly one category. The jury rubric and weights are not published. The only number given is the 70 out of 100 threshold for Top-Quality awards.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Category</th><th>Team</th><th>Prizes</th><th>What the checks require</th></tr></thead>
+    <tbody>
+      <tr><td>Quantum Pass <span class="pill">warm-up</span></td><td class="num">1 to 2</td><td class="num">10 × $150 jury<br>20 × $50 raffle</td><td>Scaffold with create-qorechain-dapp, connect QoreX, deploy on testnet, send one hybrid-signed transaction</td></tr>
+      <tr><td>Post-Quantum dApp <span class="pill rec">recommended</span></td><td class="num">1 to 3</td><td class="num">$1,500 / $750 / $500</td><td>Scoped EVM window, pqcVerify precompile, two-stage QCAI audit in docs/audit and docs/AUDIT.md, Foundry or Hardhat tests</td></tr>
+      <tr><td>Post-Quantum AI Agents <span class="pill rec">recommended</span></td><td class="num">1 to 4</td><td class="num">$1,500 / $750</td><td>Scoped EVM window; tx, value, duration and target limits; smart-account spending rules; authenticated messaging</td></tr>
+      <tr><td>Encrypted Apps</td><td class="num">1 to 4</td><td class="num">$1,500 / $750</td><td>ML-KEM-1024 encryption with QoreSeal, registered recipient keys, ML-DSA key binding, client-side encrypt and decrypt</td></tr>
+      <tr><td>Cross-VM</td><td class="num">1 to 4</td><td class="num">To be announced</td><td>Working EVM-to-Native call with atomic execution on testnet</td></tr>
+      <tr><td>Protocol Builders <span class="pill warn">heavy</span></td><td class="num">2 to 4</td><td class="num">$3,000 / $1,500</td><td>Rollup via RDK: ML-DSA-signed batches, withdrawals, verified settlement receipt, watchtower, ML-KEM data protection, threat model</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Special awards you can still win</h3>
+  <div class="cards">
+    <div class="card"><h4>People's Choice</h4><p class="amt">$500 / $300 / $200</p><p>Community vote on mainnet with QoreX, 6 to 15 Dec. Each wallet has 3 votes, max 1 per project. You cannot vote for your own.</p></div>
+    <div class="card"><h4>Best AI-Native Build</h4><p class="amt">1 × $500</p><p>Tick the AI-native option and add an AI_USAGE.md describing workflow, generated work and human contribution. Cheap to claim if you use AI tooling anyway.</p></div>
+    <div class="card"><h4>Quantum Campus</h4><p class="amt">1 × $500</p><p>Every team member must be an enrolled student, proven by email.</p></div>
+    <div class="card"><h4>Regional Awards</h4><p class="amt">5 × $200</p><p>Europe, Americas, Middle East and Africa, Asia-Pacific, Türkiye. Pick the country on the project form. Only for projects that win nothing else.</p></div>
+    <div class="card"><h4>Top-Quality Awards</h4><p class="amt">7 × $250</p><p>Highest-scored projects with no other prize, scoring at least 70/100 with the jury.</p></div>
+    <div class="card"><h4>Follow-on grants</h4><p class="amt">up to $15,000 in QOR</p><p>From January 2027, paid against milestones. Community grant up to $5,000; Association grant up to $10,000 (Advanced) or $15,000 (Expert).</p></div>
+  </div>
+  <div class="note ok"><strong>Recommendation for two people and two weeks:</strong> Post-Quantum dApp or AI Agents. Both have checkable requirements, a $1,500 top prize, and working examples in the Workshop 2 repo (qday-vault and pq-agent). Add a Quantum Pass entry on day one as a cheap second ticket. Protocol Builders pays the most but asks for a rollup with watchtower and threat model.</div>
+</section>
+
+<section id="submit">
+  <h2>Submission checklist</h2>
+  <p>Ticks are saved only in this browser. Everything here is verified by the organisers on 3 to 5 December, so treat each item as a hard requirement.</p>
+  <ul class="check" id="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1">Both teammates fully registered (GitHub + X + QoreX testnet) and linked as one team</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">Public GitHub repo with an MIT or Apache-2.0 LICENSE file that GitHub detects</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">README that credits every open-source library, kit and template used</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">All commits dated inside the fest window (4 Nov to 2 Dec). No prior work</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">QoreChain Build GitHub App installed on the repo</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">Video of at most 3 minutes showing the project working</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">Cover image 16:9, at least 1200 × 675, JPG/PNG/WebP, under 5 MB (optional, generated if missing)</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">At least one qor1 testnet address the project uses, listed on the project form</label></li>
+    <li><input type="checkbox" id="c9"><label for="c9">Kits and network features ticked on the project form (checker matches them to your dependencies)</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10">dApp track only: two-stage QCAI audit reports in docs/audit/ and docs/AUDIT.md, plus Foundry or Hardhat tests</label></li>
+    <li><input type="checkbox" id="c11"><label for="c11">Optional: AI_USAGE.md and the AI-native checkbox for the $500 award</label></li>
+    <li><input type="checkbox" id="c12"><label for="c12">Optional: country chosen on the form for the Regional award</label></li>
+    <li><input type="checkbox" id="c13"><label for="c13">Project page complete before 2 Dec 23:59 UTC. There is no submit button</label></li>
+  </ul>
+  <div class="check-foot"><button class="copy" id="clear">Clear ticks</button></div>
+  <div class="note"><strong>Conduct:</strong> no spam, harassment, vote manipulation, multiple accounts or copied projects. Any of these removes the project or the account.</div>
+</section>
+
+<section id="setup">
+  <h2>Developer setup</h2>
+  <h3>Testnet endpoints</h3>
+  <div class="endpoints">
+    <div class="ep"><span class="lbl">RPC</span><span class="val">https://rpc-testnet.qore.host</span><button class="copy" data-copy="https://rpc-testnet.qore.host">Copy</button></div>
+    <div class="ep"><span class="lbl">REST</span><span class="val">https://api-testnet.qore.host</span><button class="copy" data-copy="https://api-testnet.qore.host">Copy</button></div>
+    <div class="ep"><span class="lbl">EVM RPC</span><span class="val">https://evm-testnet.qore.host</span><button class="copy" data-copy="https://evm-testnet.qore.host">Copy</button></div>
+    <div class="ep"><span class="lbl">EVM WS</span><span class="val">wss://evm-ws-testnet.qore.host</span><button class="copy" data-copy="wss://evm-ws-testnet.qore.host">Copy</button></div>
+    <div class="ep"><span class="lbl">Chain ID</span><span class="val">qorechain-diana · EVM 9800</span><button class="copy" data-copy="9800">Copy</button></div>
+    <div class="ep"><span class="lbl">Explorer</span><span class="val">https://explore.qore.network (toggle Testnet)</span><button class="copy" data-copy="https://explore.qore.network">Copy</button></div>
+  </div>
+  <p>Mainnet is chain qorechain-vladi with EVM chain id 9801. You do not need it, except for the People's Choice vote in December.</p>
+
+  <h3>Install commands (SDK 0.14.0)</h3>
+<pre><code># scaffold
+npx create-qorechain-dapp my-dapp
+
+# core TypeScript kits
+npm i @qorechain/sdk
+npm i @qorechain/evm viem                 # EVM lane via viem
+npm i @qorechain/pqc                      # ML-DSA / ML-KEM primitives
+npm i @qorechain/qoreseal                 # encrypt-to-address (Encrypted Apps)
+npm i @qorechain/qoresign                 # message signing
+npm i @qorechain/react @qorechain/sdk react react-dom
+
+# QoreX in a React app
+npm i @qorechain/qorex-rainbowkit @rainbow-me/rainbowkit wagmi viem @tanstack/react-query
+npm i -D @qorechain/qorex-wallet-mock     # tests without a real wallet
+
+# rollups (Protocol Builders)
+npx create-qorechain-rollup my-rollup
+
+# read-only MCP server for Claude Code / Cursor
+npx -y @qorechain/mcp
+
+# other languages
+pip install qorechain-sdk qorechain-pqc
+cargo add qorechain-sdk tokio --features tokio/macros,tokio/rt-multi-thread
+go get github.com/qorechain/qorechain-sdk/packages/go@latest</code></pre>
+
+  <h3>Core flow in the SDK</h3>
+  <ol>
+    <li><code>createClient()</code> defaults to the Diana testnet.</li>
+    <li><code>generateMnemonic()</code> then <code>deriveUnifiedAccount(mnemonic)</code> gives one key with qor1, 0x and base58 addresses.</li>
+    <li><code>derivePqcCanonical(address, mnemonic)</code> derives the ML-DSA-87 keypair. Register it once with <code>ensurePqcRegistered</code>. The key is 2,592 bytes and registration needs a gas limit of about 600,000.</li>
+    <li><code>client.connectTx(signer, { pqcKeypair })</code> then <code>tx.bankSend(...)</code> sends a hybrid-signed transaction. Amounts are in uqor, where 1 QOR is 1,000,000 uqor. A hybrid bank send costs about 171,600 gas.</li>
+    <li>For the dApp and Agents tracks, open a scoped EVM authorisation window before sending EVM transactions. See gotchas below.</li>
+  </ol>
+  <p>Start from the official examples at <a href="https://github.com/qorechain/build-before-qday">github.com/qorechain/build-before-qday</a>. Workshop 1 has qday-counter, qday-guestbook, hybrid-inspector, rust-qday-pay, java-tipjar and python-airdrop. Workshop 2 has qday-vault (a contract that pays out only when a PQ key signs), pq-agent (an agent with chain-enforced spending limits) and an MCP sample.</p>
+</section>
+
+<section id="gotchas">
+  <h2>Gotchas</h2>
+  <ul>
+    <li><strong>EVM sends need two things first.</strong> Since v3.2.0, the sender must have a registered ML-DSA-87 key and an open EVM authorisation window. Otherwise eth_sendRawTransaction is rejected with codespace pqc, codes 26 to 28. Reads, eth_call and gas estimation work without them. Pre-EIP-155 transactions are refused.</li>
+    <li><strong>QoreX does not sign EVM transactions.</strong> Its injected provider only answers account and network queries. Use QoreX for native hybrid transactions, key registration and opening windows. Use MetaMask for the EVM lane.</li>
+    <li><strong>The SVM lane is read-only.</strong> Transaction submission has been disabled network-wide since an incident on 21 August 2026. Do not build on the SVM package.</li>
+    <li><strong>The interesting features are testnet-only.</strong> The pqcVerify (0x…0a01) and pqcKeyStatus (0x…0a02) precompiles, cross-VM calls, abstract accounts, CosmWasm uploads and the ML-KEM key registry are all off on mainnet. Only Diana testnet activity counts for the fest.</li>
+    <li><strong>The testnet can be reset without notice.</strong> Keep deploy scripts repeatable and record contract addresses in the repo.</li>
+    <li><strong>Faucet limits.</strong> Dashboard sign-in required, qor1 addresses only, once per 24 hours per account. Fest tokens show up on the EVM side as ERC-20 precompiles. fUSD is at 0x97143B771D34ddb9130b807b135Ae675A5a963CA.</li>
+    <li><strong>Building the node from source cannot sign hybrid transactions</strong> because the PQC library ships as a precompiled binary. Use the public endpoints or release binaries.</li>
+    <li><strong>The explorer has no source verification.</strong> Document deployed addresses and build steps in the README instead.</li>
+    <li><strong>No published rubric.</strong> Design to the listed per-category requirements and make each one obvious in the video and README.</li>
+    <li><strong>Young ecosystem.</strong> Cosmos SDK Layer 1, six validators all run by the company, token listed only on MEXC, no third-party audit yet. Performance claims are the company's own. None of this affects the hackathon, but set expectations accordingly.</li>
+  </ul>
+</section>
+
+<section id="plan">
+  <h2>Suggested two-week plan</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Days</th><th>Goal</th></tr></thead>
+    <tbody>
+      <tr><td class="date">18 to 19 Nov</td><td>Both register. Pull faucet tokens. Run a Workshop 1 example end to end and send one hybrid-signed transaction. Create the repo with licence and README on day one so commit dates are clean.</td></tr>
+      <tr><td class="date">20 Nov</td><td>Attend Workshop 3 and ask the CTO about anything unclear in your chosen track's requirements.</td></tr>
+      <tr><td class="date">20 to 26 Nov</td><td>Build the core: contracts and tests (dApp) or agent with on-chain limits (Agents). Open a scoped EVM window and exercise pqcVerify early, since this is the part most likely to surprise you.</td></tr>
+      <tr><td class="date">27 Nov</td><td>Attend Workshop 4, the submission clinic. Run the QCAI audit if on the dApp track and store the reports.</td></tr>
+      <tr><td class="date">28 Nov to 1 Dec</td><td>Polish, README with credits, AI_USAGE.md, record the 3-minute video, cover image, fill the project form, tick kits, list qor1 addresses.</td></tr>
+      <tr><td class="date">2 Dec</td><td>Final check of the project page before 23:59 UTC. Then stop pushing.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="links">
+  <h2>Links</h2>
+  <ul class="links">
+    <li><a href="https://build.qorechain.io/">Hackathon home</a></li>
+    <li><a href="https://build.qorechain.io/rules">Rules</a></li>
+    <li><a href="https://build.qorechain.io/prizes">Prizes</a></li>
+    <li><a href="https://build.qorechain.io/start">Getting started</a></li>
+    <li><a href="https://build.qorechain.io/faq">FAQ</a></li>
+    <li><a href="https://build.qorechain.io/kits">Kits and SDKs</a></li>
+    <li><a href="https://build.qorechain.io/projects">Submitted projects</a></li>
+    <li><a href="https://docs.qorechain.io">Docs hub</a></li>
+    <li><a href="https://docs.qorechain.io/build-before-qday">Workshop tutorials</a></li>
+    <li><a href="https://docs.qorechain.io/sdk/quickstart/">SDK quickstart</a></li>
+    <li><a href="https://docs.qorechain.io/developer-guide/evm-development">EVM development guide</a></li>
+    <li><a href="https://docs.qorechain.io/developer-tools/mcp">MCP server</a></li>
+    <li><a href="https://github.com/qorechain">GitHub organisation</a></li>
+    <li><a href="https://github.com/qorechain/build-before-qday">Example repo</a></li>
+    <li><a href="https://dashboard.qorechain.io/faucet">Faucet</a></li>
+    <li><a href="https://dashboard.qorechain.io">Dashboard and QCAI audit</a></li>
+    <li><a href="https://explore.qore.network">Explorer</a></li>
+    <li><a href="https://qorechain.io/qorex">QoreX wallet</a></li>
+    <li><a href="https://discord.gg/qorechain">Discord</a></li>
+    <li><a href="https://t.me/QorechainCommunity">Telegram</a></li>
+    <li><a href="https://x.com/QoreChain">X</a></li>
+    <li><a href="https://qorechain.io/security">Bug bounty (to 28 Feb 2027)</a></li>
+  </ul>
+</section>
+
+</div></main>
+<footer><div class="wrap">Compiled 18 November 2026 from build.qorechain.io, docs.qorechain.io and the QoreChain GitHub organisation. The organisers may change rules and dates; check Discord before relying on any of this.</div></footer>
+
+<script>
+(function () {
+  // Countdown to submission deadline
+  var deadline = Date.UTC(2026, 11, 2, 23, 59, 0);
+  var el = document.getElementById('countdown');
+  function tick() {
+    var ms = deadline - Date.now();
+    if (ms <= 0) { el.textContent = 'Submissions closed'; return; }
+    var d = Math.floor(ms / 86400000), h = Math.floor(ms % 86400000 / 3600000), m = Math.floor(ms % 3600000 / 60000);
+    el.textContent = d + 'd ' + h + 'h ' + m + 'm left';
+  }
+  tick(); setInterval(tick, 30000);
+
+  // Mark past and current rows in the dates table
+  var today = new Date(); var ymd = today.toISOString().slice(0, 10);
+  document.querySelectorAll('#dates tr[data-date]').forEach(function (tr) {
+    var d = tr.getAttribute('data-date');
+    if (d < ymd) tr.classList.add('past');
+    else if (d === ymd) tr.classList.add('today');
+  });
+
+  // Copy buttons
+  document.querySelectorAll('.copy[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.getAttribute('data-copy'), orig = b.textContent;
+      function done() { b.textContent = 'Copied'; setTimeout(function () { b.textContent = orig; }, 1200); }
+      try { navigator.clipboard.writeText(t).then(done, function () { fallback(); }); } catch (e) { fallback(); }
+      function fallback() {
+        var span = b.parentElement.querySelector('.val'); if (!span) return;
+        var r = document.createRange(); r.selectNodeContents(span);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Select and copy';
+        setTimeout(function () { b.textContent = orig; }, 1500);
+      }
+    });
+  });
+
+  // Checklist persistence (per browser)
+  var KEY = 'qday-checklist';
+  var boxes = document.querySelectorAll('#checklist input');
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  } catch (e) {}
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () {
+      try {
+        var s = {}; boxes.forEach(function (x) { if (x.checked) s[x.id] = 1; });
+        localStorage.setItem(KEY, JSON.stringify(s));
+      } catch (e) {}
+    });
+  });
+  document.getElementById('clear').addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

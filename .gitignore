@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# secrets: testnet keys only, never commit them anyway
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+mnemonic*.txt
+
+# build output
+dist/
+out/
+cache/
+artifacts/
+typechain-types/
+broadcast/
+coverage/
+*.log
+
+# reference material (official examples, not our code)
+reference/
+
+# editor / os
+.DS_Store
+.vscode/
+.idea/
+
+# foundry libs: reinstall with `npm run forge-std`
+dapp/lib/
