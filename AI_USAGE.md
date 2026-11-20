@@ -11,6 +11,7 @@ Best AI-Native Build award.
 
 - Researched the hackathon rules, deadlines and QoreChain developer docs and compiled the team briefing in `docs/briefing.html`.
 - Installed the toolchain (Node 22, Foundry) and scaffolded the repository with `create-qorechain-dapp`.
+- Diagnosed the derivation-path mismatch between the QoreX wallet account (coin type 118) and the EVM deployer (coin type 60), funded the deployer with a hybrid-signed transfer, registered its ML-DSA-87 key, opened the EVM window and deployed `Counter` to testnet.
 
 ## What humans did
 
@@ -23,3 +24,4 @@ Best AI-Native Build award.
 |---|---|
 | 2026-11-18 | Briefing research and write-up |
 | 2026-11-20 | Repo scaffold and toolchain install |
+| 2026-11-20 | First hybrid-signed transactions, PQ key registration, EVM window, Counter deployment |

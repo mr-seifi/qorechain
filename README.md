@@ -24,17 +24,44 @@ Team project for the [Build Before Q-Day](https://build.qorechain.io) QoreChain 
 
 ```sh
 cd dapp
-cp .env.example .env     # put a TESTNET-ONLY private key in .env, never commit it
+cp .env.example .env     # put a TESTNET-ONLY mnemonic or private key in .env, never commit it
 npm install
+npm run forge-std        # installs forge-std into dapp/lib (gitignored)
+forge test
+```
+
+## Deploying to testnet
+
+QoreChain admits an EVM transaction only from an account with a registered ML-DSA-87 key and a
+live EVM authorisation window, both set up on the native lane with hybrid-signed messages:
+
+```sh
+npm run window status    # account, PQC key, window
+npm run window register  # once per account
+npm run window open      # 600 blocks, 5 txs
+npm run deploy:testnet   # forge script, broadcast
 ```
 
 ## Testnet addresses
 
 | What | Address |
 |---|---|
-| Deployer (qor1) | _to fill_ |
-| Deployer (0x) | _to fill_ |
-| Contract | _to fill_ |
+| Deployer (qor1) | `qor1n3xjfe7r7afdevcqatc0q3fnjm3emwlw3g0vte` |
+| Deployer (0x) | `0x9c4D24E7c3F752DCB300EaF0F0453396E39dbBEE` |
+| Team QoreX wallet (qor1) | `qor1c2vlm3r56kg4n0487jd29s8feu5appud0k7zcq` |
+| `Counter` contract (EVM chain 9800) | `0xe5bA5B15077A972A73D17ac7c3Bb444B7C011d01` |
+
+### Transactions on `qorechain-diana` (20 November 2026)
+
+| Step | Lane | Tx hash |
+|---|---|---|
+| Fund deployer from team wallet, hybrid-signed (secp256k1 + ML-DSA-87) via `@qorechain/sdk` | native | `ACF7354E0252E0DB475F5CB444C626DBA29944918F83DD0121A3AF0AA4D60D26` |
+| Register deployer's ML-DSA-87 key (`MsgRegisterPQCKey`) | native | `B0B80C458FD3928F52A4D5D79EE4C03C56438EA725B92274AE73414CEB47A22C` |
+| Open scoped EVM window, hybrid-signed (600 blocks, 5 txs, 3.75 QOR cap) | native | `E67D64ABCF0082B5632B543C924D04DDF055CAF0C4D326ABEC5414AA39DEAD61` |
+| Deploy `Counter(0)` with Foundry | EVM | `0x368f53c206e293cc43e1db38fae874d114eed4bdf4cf601a230a92edc39e84bb` |
+| `increment()`, count 0 to 1 | EVM | `0x251ff58c923ff7e21d8e68141f56094536431fc96eae04b2ff23f7e57cff1c0b` |
+
+Look them up on [explore.qore.network](https://explore.qore.network) with the Testnet toggle on.
 
 ## Network
 
