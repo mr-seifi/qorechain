@@ -26,3 +26,4 @@ Best AI-Native Build award.
 | 2026-11-20 | Repo scaffold and toolchain install |
 | 2026-11-20 | First hybrid-signed transactions, PQ key registration, EVM window, Counter deployment |
 | 2026-11-20 | QoreX-connect web page (viem-wagmi template, Counter panel), cover image, video script |
+| 2026-11-20 | `PqcGate` contract with tests and testnet deployment; Ship Weeks scripts (QoreSeal key, AMM swap) |

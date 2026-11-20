@@ -14,7 +14,7 @@ image: `docs/cover.png`. Video script: `docs/VIDEO_SCRIPT.md`.
 
 | Path | What it is |
 |---|---|
-| `dapp/` | Foundry project scaffolded with `create-qorechain-dapp` (contract, tests, deploy script, EVM window helper) |
+| `dapp/` | Foundry project scaffolded with `create-qorechain-dapp`: `Counter`, `PqcGate` (reads `pqcKeyStatus`, verifies ML-DSA-87 through `pqcVerify`), tests, deploy scripts, EVM window helper |
 | `web/` | Vite + React page scaffolded with `create-qorechain-dapp` (viem-wagmi template): connects the QoreX wallet via RainbowKit and reads the deployed `Counter` |
 | `docs/` | Design notes, audit reports (`docs/audit/`, `docs/AUDIT.md`) and the team briefing |
 | `AI_USAGE.md` | How AI tooling was used, for the Best AI-Native Build award |
@@ -68,6 +68,7 @@ npm run deploy:testnet   # forge script, broadcast
 | Deployer (0x) | `0x9c4D24E7c3F752DCB300EaF0F0453396E39dbBEE` |
 | Team QoreX wallet (qor1) | `qor1c2vlm3r56kg4n0487jd29s8feu5appud0k7zcq` |
 | `Counter` contract (EVM chain 9800) | `0xe5bA5B15077A972A73D17ac7c3Bb444B7C011d01` |
+| `PqcGate` contract (EVM chain 9800) | `0x83f5dEFe59E0330414092c7372dae884d4e6Dd3A` |
 
 ### Transactions on `qorechain-diana` (20 November 2026)
 
@@ -78,6 +79,20 @@ npm run deploy:testnet   # forge script, broadcast
 | Open scoped EVM window, hybrid-signed (600 blocks, 5 txs, 3.75 QOR cap) | native | `E67D64ABCF0082B5632B543C924D04DDF055CAF0C4D326ABEC5414AA39DEAD61` |
 | Deploy `Counter(0)` with Foundry | EVM | `0x368f53c206e293cc43e1db38fae874d114eed4bdf4cf601a230a92edc39e84bb` |
 | `increment()`, count 0 to 1 | EVM | `0x251ff58c923ff7e21d8e68141f56094536431fc96eae04b2ff23f7e57cff1c0b` |
+
+| Reopen EVM window, hybrid-signed | native | `4CC0E28CE53DD5BE425B8ED10890D40C6E26388567A189D86F8F346782B86387` |
+| Deploy `PqcGate` (calls the `pqcKeyStatus` and `pqcVerify` precompiles) | EVM | `0x0a5bbcc1fd14990ecf47c7c65d03177e34f3b3f8b41b1e99bdf832ae8e49f3ab` |
+
+### Ship Weeks challenges (team wallet `qor1c2vl…7zcq`, hybrid-signed)
+
+| Challenge | Tx hash |
+|---|---|
+| First hybrid transaction | `ACF7354E0252E0DB475F5CB444C626DBA29944918F83DD0121A3AF0AA4D60D26` |
+| First QoreSeal key: ML-KEM-1024 key registered (`MsgRegisterKEMKey`, keys derived from the mnemonic with `@qorechain/qoreseal`) | `3C6EDE08B29F1F4F888D93334F440015F9B4489B440CC79C01C1D632FE0D3544` |
+| First swap in a pool: 1 QOR for fUSD in native AMM pool 2 (`MsgSwapExactIn`) | `597BCDE09FF13B328F58160F7ECFDE2EE80CEA466D78DC5D1D03D7A4295B926A` |
+| First contract with a PQC check: `PqcGate` deployment | `0x0a5bbcc1fd14990ecf47c7c65d03177e34f3b3f8b41b1e99bdf832ae8e49f3ab` |
+
+Scripts: `dapp/scripts/shipweeks.mjs kem | swap`.
 
 Look them up on [explore.qore.network](https://explore.qore.network) with the Testnet toggle on.
 
@@ -98,6 +113,8 @@ Open-source libraries, kits and templates used in this project:
 
 - [`create-qorechain-dapp`](https://github.com/qorechain/qorechain-sdk) (Foundry template) by the QoreChain Association, Apache-2.0
 - [`@qorechain/sdk`](https://www.npmjs.com/package/@qorechain/sdk) and [`@qorechain/evm`](https://www.npmjs.com/package/@qorechain/evm), Apache-2.0
+- [`@qorechain/qoreseal`](https://www.npmjs.com/package/@qorechain/qoreseal) for the ML-KEM-1024 key, Apache-2.0
+- `PqcGate` precompile interface and mock-precompile test pattern adapted from the official [qday-vault example](https://github.com/qorechain/build-before-qday/tree/main/workshop-2/01-qday-vault), Apache-2.0
 - [`create-qorechain-dapp`](https://github.com/qorechain/qorechain-sdk) (viem-wagmi template) and [`@qorechain/qorex-rainbowkit`](https://www.npmjs.com/package/@qorechain/qorex-rainbowkit), Apache-2.0
 - [Foundry](https://github.com/foundry-rs/foundry), MIT/Apache-2.0
 - [wagmi](https://wagmi.sh), [viem](https://viem.sh), [RainbowKit](https://rainbowkit.com), [TanStack Query](https://tanstack.com/query), [React](https://react.dev), [Vite](https://vitejs.dev), MIT
