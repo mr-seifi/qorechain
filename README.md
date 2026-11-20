@@ -4,13 +4,18 @@ Team project for the [Build Before Q-Day](https://build.qorechain.io) QoreChain 
 4 November to 2 December 2026. Everything here runs on the QoreChain testnet `qorechain-diana`
 (EVM chain id 9800). Test QOR has no value.
 
-> Project name, category and one-paragraph description go here once the track is chosen.
+**Quantum Pass Counter.** Category: Quantum Pass. A minimal `Counter` contract deployed with
+Foundry to the Diana testnet from an account whose ML-DSA-87 key is registered and whose
+scoped EVM authorisation window was opened with a hybrid-signed (secp256k1 + ML-DSA-87)
+transaction, plus a web page that connects the QoreX wallet and reads the contract. Cover
+image: `docs/cover.png`. Video script: `docs/VIDEO_SCRIPT.md`.
 
 ## Layout
 
 | Path | What it is |
 |---|---|
 | `dapp/` | Foundry project scaffolded with `create-qorechain-dapp` (contract, tests, deploy script, EVM window helper) |
+| `web/` | Vite + React page scaffolded with `create-qorechain-dapp` (viem-wagmi template): connects the QoreX wallet via RainbowKit and reads the deployed `Counter` |
 | `docs/` | Design notes, audit reports (`docs/audit/`, `docs/AUDIT.md`) and the team briefing |
 | `AI_USAGE.md` | How AI tooling was used, for the Best AI-Native Build award |
 
@@ -29,6 +34,19 @@ npm install
 npm run forge-std        # installs forge-std into dapp/lib (gitignored)
 forge test
 ```
+
+## Web page (QoreX connect)
+
+```sh
+cd web
+npm install
+npm run dev              # http://localhost:5173
+```
+
+Connect with QoreX set to Testnet. The page shows the connected account, its QOR balance, its EVM
+authorisation window, and the live value of the deployed `Counter`. QoreX connects and reads;
+it does not sign EVM transactions yet, so the `increment()` button needs another injected wallet
+such as MetaMask on chain 9800 with an open window.
 
 ## Deploying to testnet
 
@@ -80,7 +98,9 @@ Open-source libraries, kits and templates used in this project:
 
 - [`create-qorechain-dapp`](https://github.com/qorechain/qorechain-sdk) (Foundry template) by the QoreChain Association, Apache-2.0
 - [`@qorechain/sdk`](https://www.npmjs.com/package/@qorechain/sdk) and [`@qorechain/evm`](https://www.npmjs.com/package/@qorechain/evm), Apache-2.0
+- [`create-qorechain-dapp`](https://github.com/qorechain/qorechain-sdk) (viem-wagmi template) and [`@qorechain/qorex-rainbowkit`](https://www.npmjs.com/package/@qorechain/qorex-rainbowkit), Apache-2.0
 - [Foundry](https://github.com/foundry-rs/foundry), MIT/Apache-2.0
+- [wagmi](https://wagmi.sh), [viem](https://viem.sh), [RainbowKit](https://rainbowkit.com), [TanStack Query](https://tanstack.com/query), [React](https://react.dev), [Vite](https://vitejs.dev), MIT
 - Patterns learned from the official [build-before-qday](https://github.com/qorechain/build-before-qday) examples, Apache-2.0
 
 ## License
