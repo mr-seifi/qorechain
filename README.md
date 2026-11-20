@@ -82,6 +82,7 @@ npm run deploy:testnet   # forge script, broadcast
 
 | Reopen EVM window, hybrid-signed | native | `4CC0E28CE53DD5BE425B8ED10890D40C6E26388567A189D86F8F346782B86387` |
 | Deploy `PqcGate` (calls the `pqcKeyStatus` and `pqcVerify` precompiles) | EVM | `0x0a5bbcc1fd14990ecf47c7c65d03177e34f3b3f8b41b1e99bdf832ae8e49f3ab` |
+| `PqcGate.attest()`: a 4,627-byte ML-DSA-87 signature verified on chain by `pqcVerify` (`scripts/attest.mjs`) | EVM | `0x9b4688b60bbb830c347a6013d95044ac32f825116402f078b04401b653f81292` |
 
 ### Ship Weeks challenges (team wallet `qor1c2vl…7zcq`, hybrid-signed)
 
